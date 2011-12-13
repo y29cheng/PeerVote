@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Voting Made Easier</string>
+    <string name="app_name">PeerVote</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Log in</string>
+    <string name="register">Register</string>
+    <string name="hello1">PeerVote Log in</string>
+    <string name="logout">Log out</string>
+    <string name="add">Add Vote</string>
+    <string name="quit">Quit</string>
+    <string name="id">ID</string>
+    <string name="title">Title</string>
+    <string name="owner">Author</string>
+    <string name="submit">Submit</string>
+    <string name="question_default">Enter question here</string>
+    <string name="choice1_default">Enter choice1 here</string>
+	<string name="choice2_default">Enter choice2 here</string>
+	<string name="choice3_default">Enter choice3 here</string>
+	<string name="choice4_default">Enter choice4 here</string>
+</resources>
