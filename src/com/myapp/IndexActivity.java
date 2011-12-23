@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 public class IndexActivity extends Activity {
 	
-	public static JSONObject json = null;
+	public static JSONArray json = null;
 	public static int position;
 	
 	@Override
@@ -44,7 +44,7 @@ public class IndexActivity extends Activity {
 		ArrayList<HashMap<String, String>> voteList = new ArrayList<HashMap<String, String>>();
 		json = CustomHttpClient.getJSONfromURL("http://teamwiki.phpfogapp.com/json.php");
 		try {
-			JSONArray votes = json.getJSONArray("votes");
+			JSONArray votes = json;
 			for (int i = 0; i < votes.length(); i++) {
 				HashMap<String, String> map = new HashMap<String, String>();
 				JSONObject vote = votes.getJSONObject(i);
@@ -80,7 +80,7 @@ public class IndexActivity extends Activity {
 						if (item == 1) {
 							dialog.cancel();
 							try {
-								JSONArray votes = IndexActivity.json.getJSONArray("votes");
+								JSONArray votes = IndexActivity.json;
 								JSONObject vote = votes.getJSONObject(pos);
 								owner = vote.getString("owner");
 								if (!LoginActivity.username.equals(owner)) {
@@ -97,14 +97,18 @@ public class IndexActivity extends Activity {
 							           public void onClick(DialogInterface dialog, int id) {
 							        	   dialog.cancel();
 							        	   try {
-							        		   JSONArray votes = IndexActivity.json.getJSONArray("votes");
+							        		   JSONArray votes = IndexActivity.json;
 							        		   JSONObject vote = votes.getJSONObject(pos);
 								        	   ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-								        	   postParameters.add(new BasicNameValuePair("id", vote.getString("id")));
+								        	   if (!vote.getString("owner").equals(LoginActivity.username)) {
+								        		   showAlertDialog("You can't delete other users' vote.");
+								        		   return;
+								        	   }
+								        	   postParameters.add(new BasicNameValuePair("id", vote.getJSONObject("_id").getString("$oid")));
 								        	   String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/delete.php", postParameters);
-								        	   if ("1\n".equals(result)) {
+								        	   if ("success\n".equals(result)) {
 								        		   refresh();
-								        		   Toast.makeText(getApplicationContext(), "The vote with id " + vote.getString("id") + " has been deleted.", Toast.LENGTH_SHORT).show();
+								        		   Toast.makeText(getApplicationContext(), "The vote with id " + vote.getJSONObject("_id").getString("$oid") + " has been deleted.", Toast.LENGTH_SHORT).show();
 								        	   } else {
 								        		   showAlertDialog("Failed to delete the vote.");
 								        	   }
@@ -122,7 +126,7 @@ public class IndexActivity extends Activity {
 							alert.show();
 						} else {
 							try {
-								JSONArray votes = IndexActivity.json.getJSONArray("votes");
+								JSONArray votes = IndexActivity.json;
 								JSONObject vote = votes.getJSONObject(pos);
 								owner = vote.getString("owner");
 								if (!LoginActivity.username.equals(owner)) {

@@ -35,12 +35,16 @@ public class ViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.view);
 		try {
-			JSONArray votes = IndexActivity.json.getJSONArray("votes");
+			JSONArray votes = IndexActivity.json;
 			final JSONObject vote = votes.getJSONObject(IndexActivity.position);
 			TextView tv = (TextView) findViewById(R.id.textView17);
 			tv.setText(vote.getString("title"));
-			final String index = vote.getString("id");
-			String[] options = new String[] {vote.getString("choice1"), vote.getString("choice2"), vote.getString("choice3"), vote.getString("choice4")};
+			JSONObject ID = vote.getJSONObject("_id");
+			final String index = ID.getString("$oid");
+			String[] options = new String[vote.getInt("choices")];
+			for (int i = 0; i < vote.getInt("choices"); i++) {
+				options[i] = vote.getString("choice" + (i + 1));
+			}
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewActivity.this, android.R.layout.simple_list_item_single_choice, options);
 			ListView lv = (ListView) findViewById(R.id.listView2);
 			lv.setAdapter(adapter);
@@ -55,10 +59,12 @@ public class ViewActivity extends Activity {
 					    	   public void onClick(DialogInterface dialog, int id) {
 					    		   dialog.cancel();
 					    		   try {
-						    		   String owner = vote.getString("owner");
-						    		   if (LoginActivity.username.equals(owner)) {
-						    			   showAlertDialog("You created this vote.");
-						    			   return;
+						    		   JSONArray voters = vote.getJSONArray("voters");
+						    		   for (int i = 0; i < voters.length(); i++) {
+						    			   if (voters.get(i).equals(LoginActivity.username)) {
+						    				   showAlertDialog("You can only vote once.");
+						    				   return;
+						    			   }
 						    		   }
 					    		   } catch (Exception e) {
 					        		   Log.e("log_tag", "Error parsing data " + e.toString());
@@ -73,10 +79,8 @@ public class ViewActivity extends Activity {
 					    			   startActivity(intent);
 					    			   Toast.makeText(getApplicationContext(), "You vote has been submitted.", Toast.LENGTH_SHORT).show();
 					    			   finish();
-					    		   } else if ("hasVoted\n".equals(result)) {
-					    			   showAlertDialog("You have already voted.");
 					    		   } else {
-					    			   showAlertDialog("Vote failed, try again later.");
+					    			   showAlertDialog("Vote failed, try again later. " + result);
 					    		   }
 					           }
 					       })
@@ -90,7 +94,7 @@ public class ViewActivity extends Activity {
 				}
 			});
 		} catch (Exception e) {
-			Log.e("log_tag", "Error parsing data " + e.toString());
+			Log.e("log_tag", "Error parsing data2 " + e.toString());
 		}
 	}
 	

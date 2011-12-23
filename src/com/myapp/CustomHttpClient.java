@@ -15,6 +15,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.util.Log;
@@ -63,10 +64,10 @@ public class CustomHttpClient {
 		return result;
 	}
 	
-	public static JSONObject getJSONfromURL(String url) {
+	public static JSONArray getJSONfromURL(String url) {
 		InputStream is = null;
 		String result = "";
-		JSONObject jArray = null; 
+		JSONArray jArray = null; 
 		try {
 			HttpClient client = getHttpClient();
 			HttpPost request = new HttpPost(url);
@@ -90,7 +91,7 @@ public class CustomHttpClient {
 			Log.e("log_tag", "Error converting result" + e.toString());
 		}
 		try {
-			jArray = new JSONObject(result);
+			jArray = new JSONArray(result);
 		} catch (Exception e) {
 			Log.e("log_tag", "Error parsing data" + e.toString());
 		}

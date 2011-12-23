@@ -4,58 +4,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ScrollView
-        android:id="@+id/scrollView1"
+    <LinearLayout
+        android:id="@+id/linearLayout14"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <LinearLayout
-            android:id="@+id/linearLayout11"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" >
+        <Button
+            android:id="@+id/button8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_row" />
 
-            <EditText
-                android:id="@+id/editText7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine" >
+        <Button
+            android:id="@+id/button9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete_row" />
 
-                <requestFocus />
-            </EditText>
+        <Button
+            android:id="@+id/button10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save" />
 
-            <EditText
-                android:id="@+id/editText8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine" />
+    </LinearLayout>
 
-            <EditText
-                android:id="@+id/editText9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine" />
-
-            <EditText
-                android:id="@+id/editText10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine" />
-
-            <EditText
-                android:id="@+id/editText11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="190px"
-                android:text="@string/submit" />
-
-        </LinearLayout>
-    </ScrollView>
+    <ListView
+        android:id="@+id/listView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
 
 </LinearLayout>
