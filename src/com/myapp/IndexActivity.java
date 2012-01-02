@@ -10,9 +10,12 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,8 +26,17 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-public class IndexActivity extends Activity {
+public class IndexActivity extends Activity implements Runnable {
 	
+	private ProgressDialog pd;
+	private ArrayList<HashMap<String, String>> voteList;
+	private Handler handler = new Handler() {
+		public void handleMessage(Message msg) {
+			pd.dismiss();
+			setContentView(R.layout.index);
+			refresh();
+		}
+	};
 	public static JSONArray json = null;
 	public static int position;
 	
@@ -36,12 +48,13 @@ public class IndexActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.index);
-		refresh();
+		pd = ProgressDialog.show(this, "", "Loading, please wait...", false);
+		Thread th = new Thread(this);
+		th.start();
 	}
 
-	private void refresh() {
-		ArrayList<HashMap<String, String>> voteList = new ArrayList<HashMap<String, String>>();
+	public void run() {
+		voteList = new ArrayList<HashMap<String, String>>();
 		json = CustomHttpClient.getJSONfromURL("http://teamwiki.phpfogapp.com/json.php");
 		try {
 			JSONArray votes = json;
@@ -57,6 +70,9 @@ public class IndexActivity extends Activity {
 		} catch (Exception e) {
 			Log.e("log_tag", "Error parsing data " + e.toString());
 		}
+		handler.sendEmptyMessage(0);
+	}
+	private void refresh() {
 		ListAdapter adapter = new SimpleAdapter(this, voteList, R.layout.list, new String[] {"owner", "title"}, new int[] {R.id.textView18, R.id.textView14});
 		ListView lv = (ListView) findViewById(R.id.listView1);
 		lv.setAdapter(adapter);
