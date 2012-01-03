@@ -72,6 +72,7 @@ public class IndexActivity extends Activity implements Runnable {
 		}
 		handler.sendEmptyMessage(0);
 	}
+	
 	private void refresh() {
 		ListAdapter adapter = new SimpleAdapter(this, voteList, R.layout.list, new String[] {"owner", "title"}, new int[] {R.id.textView18, R.id.textView14});
 		ListView lv = (ListView) findViewById(R.id.listView1);
@@ -123,7 +124,9 @@ public class IndexActivity extends Activity implements Runnable {
 								        	   postParameters.add(new BasicNameValuePair("id", vote.getJSONObject("_id").getString("$oid")));
 								        	   String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/delete.php", postParameters);
 								        	   if ("success\n".equals(result)) {
-								        		   refresh();
+								        		   pd = ProgressDialog.show(IndexActivity.this, "", "Loading, please wait...", false);
+								        		   Thread th = new Thread(IndexActivity.this);
+								        		   th.start();
 								        		   Toast.makeText(getApplicationContext(), "The vote with id " + vote.getJSONObject("_id").getString("$oid") + " has been deleted.", Toast.LENGTH_SHORT).show();
 								        	   } else {
 								        		   showAlertDialog("Failed to delete the vote.");
