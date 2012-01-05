@@ -16,7 +16,7 @@
         android:id="@+id/linearLayout6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60px" >
+        android:layout_marginTop="30dp" >
 
         <TextView
             android:id="@+id/textView10"
@@ -41,7 +41,7 @@
         android:id="@+id/linearLayout7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30px" >
+        android:layout_marginTop="20dp" >
 
         <TextView
             android:id="@+id/textView11"
@@ -64,8 +64,8 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="200px"
-        android:layout_marginTop="20px"
+        android:layout_marginLeft="125dp"
+        android:layout_marginTop="20dp"
         android:onClick="logInListener"
         android:text="@string/login" />
 
@@ -73,7 +73,7 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="410px"
+        android:layout_marginLeft="265dp"
         android:text="@string/quit"
         android:onClick="quitListener"
         android:clickable="true"

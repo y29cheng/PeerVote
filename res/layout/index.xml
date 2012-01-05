@@ -12,8 +12,8 @@
         <TextView
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10px"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="5dp"
             android:text="@string/add"
             android:clickable="true"
             android:onClick="addVoteListener"
@@ -22,8 +22,8 @@
         <TextView
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="260px"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="175dp"
             android:text="@string/logout"
             android:clickable="true"
             android:onClick="logOutListener"
@@ -35,7 +35,7 @@
         android:id="@+id/linearLayout10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10px" >
+        android:layout_marginTop="10dp" >
 
         <TextView
             android:id="@+id/textView15"
@@ -48,7 +48,7 @@
             android:id="@+id/textView16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50px"
+            android:layout_marginLeft="50dp"
             android:text="@string/title"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -58,7 +58,7 @@
         android:id="@+id/listView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20px" >
+        android:layout_marginTop="20dp" >
     </ListView>
 
 </LinearLayout>

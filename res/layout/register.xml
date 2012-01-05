@@ -16,7 +16,7 @@
         android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60px" >
+        android:layout_marginTop="30dp" >
 
         <TextView
             android:id="@+id/textView8"
@@ -41,7 +41,7 @@
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30px"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal" >
 
         <TextView
@@ -65,7 +65,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30px" >
+        android:layout_marginTop="20dp" >
 
         <TextView
             android:id="@+id/textView3"
@@ -88,7 +88,7 @@
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30px" >
+        android:layout_marginTop="20dp" >
 
         <TextView
             android:id="@+id/textView4"
@@ -111,7 +111,7 @@
         android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30px" >
+        android:layout_marginTop="20dp" >
 
         <Button
             android:id="@+id/button1"
@@ -126,7 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="20dp"
             android:text="Or"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -135,7 +135,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="20dp"
             android:text="@string/login"
             android:onClick="registerListener"
             android:clickable="true"
