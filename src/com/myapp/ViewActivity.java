@@ -12,7 +12,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -67,7 +66,8 @@ public class ViewActivity extends Activity {
 						    			   }
 						    		   }
 					    		   } catch (Exception e) {
-					        		   Log.e("log_tag", "Error parsing data " + e.toString());
+					        		   showAlertDialog("Error reading json data.");
+					        		   return;
 					        	   }
 					    		   ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 					    		   postParameters.add(new BasicNameValuePair("index", index));
@@ -94,7 +94,7 @@ public class ViewActivity extends Activity {
 				}
 			});
 		} catch (Exception e) {
-			Log.e("log_tag", "Error parsing data2 " + e.toString());
+			showAlertDialog("Error reading json data.");
 		}
 	}
 	

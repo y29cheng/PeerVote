@@ -16,7 +16,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -68,7 +67,7 @@ public class IndexActivity extends Activity implements Runnable {
 				voteList.add(map);
 			}
 		} catch (Exception e) {
-			Log.e("log_tag", "Error parsing data " + e.toString());
+			showAlertDialog("Error reading json data.");
 		}
 		handler.sendEmptyMessage(0);
 	}
@@ -105,7 +104,8 @@ public class IndexActivity extends Activity implements Runnable {
 									return;
 								}
 							} catch (Exception e) {
-								Log.e("log_tag", "Error parsing data" + e.toString());
+								showAlertDialog("Error reading json data.");
+								return;
 							}
 							AlertDialog.Builder builder = new AlertDialog.Builder(IndexActivity.this);
 							builder.setMessage("Are you sure?")
@@ -132,7 +132,7 @@ public class IndexActivity extends Activity implements Runnable {
 								        		   showAlertDialog("Failed to delete the vote.");
 								        	   }
 							        	   } catch (Exception e) {
-							        		   Log.e("log_tag", "Error parsing data " + e.toString());
+							        		   showAlertDialog("Error reading json data.");
 							        	   }
 							           }
 							       })
@@ -157,7 +157,7 @@ public class IndexActivity extends Activity implements Runnable {
 								startActivity(intent);
 								finish();
 							} catch (Exception e) {
-								Log.e("log_tag", "Error parsing data" + e.toString());
+								showAlertDialog("Error reading json data");
 							}
 						}
 					}
