@@ -37,8 +37,6 @@ public class RegisterActivity extends Activity {
     		String message = "";
     		if (username.equals("")) {
     			message = "Please input your username.";
-    		} else if (!email.matches("(\\w+)@(\\w+\\.)(\\w+)(\\.\\w+)*")) {
-    			message = "Please provide your valid email.";
     		} else if (!passwd1.equals(passwd2) || passwd1.equals("")) {
     			message = "Passwords don't match.";
     		} else {

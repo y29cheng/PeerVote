@@ -44,7 +44,7 @@ public class ViewActivity extends Activity {
 			for (int i = 0; i < vote.getInt("choices"); i++) {
 				options[i] = vote.getString("choice" + (i + 1));
 			}
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewActivity.this, android.R.layout.simple_list_item_single_choice, options);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(ViewActivity.this, R.layout.list2, R.id.textView19, options);
 			ListView lv = (ListView) findViewById(R.id.listView2);
 			lv.setAdapter(adapter);
 			lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);

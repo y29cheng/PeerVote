@@ -62,8 +62,10 @@ public class IndexActivity extends Activity implements Runnable {
 				JSONObject vote = votes.getJSONObject(i);
 				String owner = vote.getString("owner");
 				String title = vote.getString("title");
-				map.put("owner", owner.length() > 10 ? owner.substring(0, 9) : owner);
-				map.put("title", title.length() > 20 ? title.substring(0, 19) : title);
+//				map.put("owner", owner.length() > 10 ? owner.substring(0, 9) : owner);
+//				map.put("title", title.length() > 20 ? title.substring(0, 19) : title);
+				map.put("owner", owner);
+				map.put("title", title);
 				voteList.add(map);
 			}
 		} catch (Exception e) {

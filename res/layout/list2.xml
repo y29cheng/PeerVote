@@ -5,25 +5,17 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/linearLayout9"
+        android:id="@+id/linearLayout15"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/textView19"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:scrollbars="horizontal"
-            android:text="@string/owner"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="horizontal"
-            android:layout_marginLeft="50dp"
-            android:text="@string/title"
+            android:gravity="center_vertical"
+            android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </LinearLayout>
