@@ -16,6 +16,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -28,7 +31,7 @@ import android.widget.Toast;
 public class IndexActivity extends Activity implements Runnable {
 	
 	private ProgressDialog pd;
-	private ArrayList<HashMap<String, String>> voteList;
+	private static ArrayList<HashMap<String, String>> voteList = null;
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			pd.dismiss();
@@ -52,24 +55,46 @@ public class IndexActivity extends Activity implements Runnable {
 		th.start();
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.index_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.refresh:
+				voteList = null;
+				startActivity(getIntent());
+				finish();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
 	public void run() {
-		voteList = new ArrayList<HashMap<String, String>>();
-		json = CustomHttpClient.getJSONfromURL("http://teamwiki.phpfogapp.com/json.php");
-		try {
-			JSONArray votes = json;
-			for (int i = 0; i < votes.length(); i++) {
-				HashMap<String, String> map = new HashMap<String, String>();
-				JSONObject vote = votes.getJSONObject(i);
-				String owner = vote.getString("owner");
-				String title = vote.getString("title");
-//				map.put("owner", owner.length() > 10 ? owner.substring(0, 9) : owner);
-//				map.put("title", title.length() > 20 ? title.substring(0, 19) : title);
-				map.put("owner", owner);
-				map.put("title", title);
-				voteList.add(map);
+		if (voteList == null) {
+			voteList = new ArrayList<HashMap<String, String>>();
+			json = CustomHttpClient.getJSONfromURL("http://teamwiki.phpfogapp.com/json.php");
+			try {
+				JSONArray votes = json;
+				for (int i = 0; i < votes.length(); i++) {
+					HashMap<String, String> map = new HashMap<String, String>();
+					JSONObject vote = votes.getJSONObject(i);
+					String owner = vote.getString("owner");
+					String title = vote.getString("title");
+	//				map.put("owner", owner.length() > 10 ? owner.substring(0, 9) : owner);
+	//				map.put("title", title.length() > 20 ? title.substring(0, 19) : title);
+					map.put("owner", owner);
+					map.put("title", title);
+					voteList.add(map);
+				}
+			} catch (Exception e) {
+				showAlertDialog("Error reading json data.");
 			}
-		} catch (Exception e) {
-			showAlertDialog("Error reading json data.");
 		}
 		handler.sendEmptyMessage(0);
 	}
