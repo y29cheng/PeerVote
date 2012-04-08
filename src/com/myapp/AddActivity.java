@@ -100,6 +100,7 @@ public class AddActivity extends Activity {
 				}
 				String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/add.php", postParameters);
 				if ("success\n".equals(result)) {
+					IndexActivity.voteList = null;
 					Intent intent = new Intent(AddActivity.this, IndexActivity.class);
 					startActivity(intent);
 	        		Toast.makeText(getApplicationContext(), "Your vote has been recorded.", Toast.LENGTH_SHORT).show();

@@ -31,7 +31,7 @@ import android.widget.Toast;
 public class IndexActivity extends Activity implements Runnable {
 	
 	private ProgressDialog pd;
-	private static ArrayList<HashMap<String, String>> voteList = null;
+	static ArrayList<HashMap<String, String>> voteList = null;
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			pd.dismiss();
@@ -151,6 +151,7 @@ public class IndexActivity extends Activity implements Runnable {
 								        	   postParameters.add(new BasicNameValuePair("id", vote.getJSONObject("_id").getString("$oid")));
 								        	   String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/delete.php", postParameters);
 								        	   if ("success\n".equals(result)) {
+								        		   voteList = null;
 								        		   pd = ProgressDialog.show(IndexActivity.this, "", "Loading, please wait...", false);
 								        		   Thread th = new Thread(IndexActivity.this);
 								        		   th.start();
