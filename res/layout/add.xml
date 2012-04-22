@@ -28,6 +28,12 @@
             android:text="@string/submit" />
 
     </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/expire_prompt" />
 	
 	<ListView
         android:id="@+id/listView3"

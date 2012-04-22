@@ -29,6 +29,12 @@
 
     </LinearLayout>
 
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/expire_prompt" />
+
     <ListView
         android:id="@+id/listView4"
         android:layout_width="match_parent"

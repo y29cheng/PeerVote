@@ -1,6 +1,8 @@
 package com.myapp;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -24,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +36,9 @@ public class EditActivity extends Activity {
 	static String customText;
 	static int index;
 	int clickCounter = 0;
+	
+	private Spinner spinner;
+	private ArrayAdapter<CharSequence> spinnerAdapter;
 	
 	ArrayAdapter<String> adapter;
 	ArrayList<String> inputs = new ArrayList<String>();
@@ -48,9 +54,22 @@ public class EditActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit);
+		// set up spinner
+		spinner = (Spinner) findViewById(R.id.spinner2);
+		spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.expire_array, android.R.layout.simple_spinner_item);
+		spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(spinnerAdapter);
+		
 		try {
 			JSONArray votes = IndexActivity.json;
  		   	final JSONObject vote = votes.getJSONObject(IndexActivity.position);
+ 		   	try {
+ 		   		int spinnerPos = Integer.parseInt(vote.getString("expire"));
+ 		   		spinner.setSelection(spinnerPos);
+ 		   	} catch (Exception e) {
+ 		   		int spinnerPos = 24;
+ 		   		spinner.setSelection(spinnerPos);
+ 		   	}
  		   	final String id = vote.getJSONObject("_id").getString("$oid");
  		   	final String created = vote.getString("created");
  		   	final int choices = vote.getInt("choices");
@@ -105,6 +124,13 @@ public class EditActivity extends Activity {
  		   			postParameters.add(new BasicNameValuePair("owner", LoginActivity.username));
  		   			postParameters.add(new BasicNameValuePair("counter", ((Integer) (choices + 1 + clickCounter)).toString()));
  		   			postParameters.add(new BasicNameValuePair("created", created));
+ 		   			// get expire hours
+ 		   			postParameters.add(new BasicNameValuePair("expire", ((Integer) spinner.getSelectedItemPosition()).toString()));
+ 		   			// get current time
+ 		   			Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+ 		   			long secsSinceEpoch = calendar.getTimeInMillis() / 1000L;
+ 		   			postParameters.add(new BasicNameValuePair("time", ((Long) secsSinceEpoch).toString()));
+ 		   			
  		   			for (int i = 0; i < choices + 1 + clickCounter; i++) {
  		   				if (i == 0) {
  		   					postParameters.add(new BasicNameValuePair("title", inputs.get(i)));

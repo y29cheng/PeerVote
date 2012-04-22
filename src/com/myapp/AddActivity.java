@@ -1,6 +1,8 @@
 package com.myapp;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -22,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +35,8 @@ public class AddActivity extends Activity {
 	static int index;
 	int clickCounter = 0;
 	ArrayAdapter<String> adapter;
+	private ArrayAdapter<CharSequence> spinnerAdapter;
+	private Spinner spinner;
 	ArrayList<String> inputs = new ArrayList<String>();
 	
 	@Override
@@ -45,6 +50,12 @@ public class AddActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add);
+		//Spinner
+		spinner = (Spinner) findViewById(R.id.spinner1);
+		spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.expire_array, android.R.layout.simple_spinner_item);
+		spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(spinnerAdapter);
+		
 		adapter = new ArrayAdapter<String>(AddActivity.this, android.R.layout.simple_list_item_1, inputs);
 		final ListView lv = (ListView) findViewById(R.id.listView3);
 		lv.setAdapter(adapter);
@@ -92,6 +103,12 @@ public class AddActivity extends Activity {
 					}
 					postParameters.add(new BasicNameValuePair("counter", ((Integer) clickCounter).toString()));
 					postParameters.add(new BasicNameValuePair("owner", LoginActivity.username));
+					// get expire hours
+					postParameters.add(new BasicNameValuePair("expire", ((Integer) spinner.getSelectedItemPosition()).toString()));
+					// get current time
+					Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+					long secsSinceEpoch = calendar.getTimeInMillis() / 1000L;
+					postParameters.add(new BasicNameValuePair("time", ((Long) secsSinceEpoch).toString()));
 					if (i == 0) {
 						postParameters.add(new BasicNameValuePair("title", inputs.get(i)));
 					} else {
