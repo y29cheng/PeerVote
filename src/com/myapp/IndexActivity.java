@@ -42,6 +42,7 @@ public class IndexActivity extends Activity implements Runnable {
 	public static JSONArray json = null;
 	public static int position;
 	
+	
 	@Override
 	public void onBackPressed() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -95,7 +96,7 @@ public class IndexActivity extends Activity implements Runnable {
 	public void run() {
 		if (voteList == null) {
 			voteList = new ArrayList<HashMap<String, String>>();
-			json = CustomHttpClient.getJSONfromURL("http://teamwiki.phpfogapp.com/json.php");
+			json = CustomHttpClient.executeHttpGet(BaseActivity.votes_baseUrl, BaseActivity.apiKey);
 			try {
 				JSONArray votes = json;
 				for (int i = 0; i < votes.length(); i++) {
@@ -103,8 +104,6 @@ public class IndexActivity extends Activity implements Runnable {
 					JSONObject vote = votes.getJSONObject(i);
 					String owner = vote.getString("owner");
 					String title = vote.getString("title");
-	//				map.put("owner", owner.length() > 10 ? owner.substring(0, 9) : owner);
-	//				map.put("title", title.length() > 20 ? title.substring(0, 19) : title);
 					map.put("owner", owner);
 					map.put("title", title);
 					voteList.add(map);
@@ -160,22 +159,31 @@ public class IndexActivity extends Activity implements Runnable {
 							        	   try {
 							        		   JSONArray votes = IndexActivity.json;
 							        		   JSONObject vote = votes.getJSONObject(pos);
-								        	   ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-								        	   if (!vote.getString("owner").equals(LoginActivity.username)) {
-								        		   showAlertDialog("You can't delete other users' vote.");
-								        		   return;
-								        	   }
-								        	   postParameters.add(new BasicNameValuePair("id", vote.getJSONObject("_id").getString("$oid")));
-								        	   String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/delete.php", postParameters);
-								        	   if ("success\n".equals(result)) {
-								        		   voteList = null;
+//								        	   ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+//								        	   if (!vote.getString("owner").equals(LoginActivity.username)) {
+//								        		   showAlertDialog("You can't delete other users' vote.");
+//								        		   return;
+//								        	   }
+//								        	   postParameters.add(new BasicNameValuePair("id", vote.getJSONObject("_id").getString("$oid")));
+//								        	   String result = CustomHttpClient.executeHttpPut(vote, "[]");
+							        		   if (CustomHttpClient.executeHttpPut(BaseActivity.votes_baseUrl, BaseActivity.apiKey, vote, "[]")) {
+							        			   voteList = null;
 								        		   pd = ProgressDialog.show(IndexActivity.this, "", "Loading, please wait...", false);
 								        		   Thread th = new Thread(IndexActivity.this);
 								        		   th.start();
 								        		   Toast.makeText(getApplicationContext(), "The vote with id " + vote.getJSONObject("_id").getString("$oid") + " has been deleted.", Toast.LENGTH_SHORT).show();
-								        	   } else {
-								        		   showAlertDialog("Failed to delete the vote.");
-								        	   }
+							        		   } else {
+							        			   showAlertDialog("Failed to delete the vote.");
+							        		   }
+//								        	   if ("success\n".equals(result)) {
+//								        		   voteList = null;
+//								        		   pd = ProgressDialog.show(IndexActivity.this, "", "Loading, please wait...", false);
+//								        		   Thread th = new Thread(IndexActivity.this);
+//								        		   th.start();
+//								        		   Toast.makeText(getApplicationContext(), "The vote with id " + vote.getJSONObject("_id").getString("$oid") + " has been deleted.", Toast.LENGTH_SHORT).show();
+//								        	   } else {
+//								        		   showAlertDialog("Failed to delete the vote.");
+//								        	   }
 							        	   } catch (Exception e) {
 							        		   showAlertDialog("Error reading json data.");
 							        	   }
