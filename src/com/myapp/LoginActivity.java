@@ -54,19 +54,24 @@ public class LoginActivity extends Activity {
 				message = "Please enter password.";
 				showAlertDialog(message);
 			} else  {
-				ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-				postParameters.add(new BasicNameValuePair("username", username));
-				postParameters.add(new BasicNameValuePair("password", password));
-				String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/login.php", postParameters);
-				if (result.equals("1\n")) {
-					LoginActivity.username = username;
-					Intent intent = new Intent(this, IndexActivity.class);
-					startActivity(intent);
-					finish();
-				} else {
-					message = "Log in failed.";
-					showAlertDialog(message);
-				}
+//				ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+//				postParameters.add(new BasicNameValuePair("username", username));
+//				postParameters.add(new BasicNameValuePair("password", password));
+//				String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/login.php", postParameters);
+//				if (result.equals("1\n")) {
+//					LoginActivity.username = username;
+//					Intent intent = new Intent(this, IndexActivity.class);
+//					startActivity(intent);
+//					finish();
+//				} else {
+//					message = "Log in failed.";
+//					showAlertDialog(message);
+//				}
+				BaseActivity.openDBConnection();
+				// insert code here
+				
+				BaseActivity.closeDBConnection();
+				
 			}
 		}		
 	}
