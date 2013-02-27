@@ -40,16 +40,17 @@ public class RegisterActivity extends Activity {
     		} else if (!passwd1.equals(passwd2) || passwd1.equals("")) {
     			message = "Passwords don't match.";
     		} else {
-    			ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-    			postParameters.add(new BasicNameValuePair("username", username));
-    			postParameters.add(new BasicNameValuePair("email", email));
-    			postParameters.add(new BasicNameValuePair("password", passwd1));
-				String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/register.php", postParameters);
-				if (result.equals("0\n")) {
-					Intent intent = new Intent(this, LoginActivity.class);
-					startActivity(intent);
-					finish();
-					return;
+//    			ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+//    			postParameters.add(new BasicNameValuePair("username", username));
+//    			postParameters.add(new BasicNameValuePair("email", email));
+//    			postParameters.add(new BasicNameValuePair("password", passwd1));
+//				String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/register.php", postParameters);
+//				if (result.equals("0\n")) {
+//					Intent intent = new Intent(this, LoginActivity.class);
+//					startActivity(intent);
+//					finish();
+//					return;
+    			
 				} else if (result.equals("1\n")) {
 					message = "Account exists.";
 				} else if (result.equals("2\n")) {
@@ -67,14 +68,4 @@ public class RegisterActivity extends Activity {
     	}
     }
     
-    private void showAlertDialog(String message) {
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(message)
-		       .setCancelable(false)
-		       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {}
-		       });
-		AlertDialog alert = builder.create();
-		alert.show();
-    }
 }

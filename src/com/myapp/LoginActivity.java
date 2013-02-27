@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -49,10 +54,10 @@ public class LoginActivity extends Activity {
 			String message = null;
 			if (username.equals("")) {
 				message = "Please enter username.";
-				showAlertDialog(message);
+				BaseActivity.showAlertDialog(message, this);
 			} else if (password.equals("")) {
 				message = "Please enter password.";
-				showAlertDialog(message);
+				BaseActivity.showAlertDialog(message, this);
 			} else  {
 //				ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 //				postParameters.add(new BasicNameValuePair("username", username));
@@ -67,7 +72,29 @@ public class LoginActivity extends Activity {
 //					message = "Log in failed.";
 //					showAlertDialog(message);
 //				}
-				BaseActivity.openDBConnection();
+				if (!BaseActivity.openDBConnection()) {
+					message = "Can not establish connection to remote host.";
+					BaseActivity.showAlertDialog(message, this);
+				}
+				DBCollection coll = BaseActivity.db.getCollection("logins");
+				BasicDBObject query = new BasicDBObject("username", username);
+				DBObject obj = coll.findOne(query);
+				String fingerprint = obj.get("fingerprint").toString();
+				String salt = obj.get("salt").toString();
+				try {
+					if (BaseActivity.validatePassword(password, salt, fingerprint)) {
+						LoginActivity.username = username;
+						Intent intent = new Intent(this, IndexActivity.class);
+						startActivity(intent);
+						finish();
+					} else {
+						message = "Invalid username or password.";
+						BaseActivity.showAlertDialog(message, this);
+					}
+				} catch (Exception e) {
+					message = "Encountered an internal problem.";
+					BaseActivity.showAlertDialog(message, this);
+				}
 				// insert code here
 				
 				BaseActivity.closeDBConnection();
@@ -95,15 +122,6 @@ public class LoginActivity extends Activity {
 		alert.show();
 	}
 	
-    private void showAlertDialog(String message) {
-    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage(message)
-		       .setCancelable(false)
-		       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {}
-		       });
-		AlertDialog alert = builder.create();
-		alert.show();
-    }
+    
     
 }

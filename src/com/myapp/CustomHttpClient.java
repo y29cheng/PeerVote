@@ -26,8 +26,8 @@ import android.content.Entity;
 import android.util.Log;
 
 public class CustomHttpClient {
-	public static final int HTTP_TIMEOUT = 10000;
-	private static HttpClient mHttpClient;
+	private static final int HTTP_TIMEOUT = 10000;
+	private static HttpClient mHttpClient = null;
 	
 	private static HttpClient getHttpClient() {  
 		if (mHttpClient == null) {  
