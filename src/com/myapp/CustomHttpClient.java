@@ -50,7 +50,7 @@ public class CustomHttpClient {
 		request.setEntity(formEntity);  
 		HttpResponse response = client.execute(request);
 		statusCode = response.getStatusLine().getStatusCode();
-		return statusCode == 200 ? true : false;
+		return statusCode == 200;
 	}
 	
 	public static boolean executeHttpPut(String baseUrl, String apiKey, JSONObject query, String jsonData) throws Exception {
@@ -72,7 +72,7 @@ public class CustomHttpClient {
 		httpput.setEntity(entity);
 		HttpResponse response = client.execute(httpput);
 		statusCode = response.getStatusLine().getStatusCode();
-		return statusCode == 200 ? true : false;
+		return statusCode == 200;
 	}
 	
 	public static JSONArray executeHttpGet(String baseUrl, String apiKey) {
