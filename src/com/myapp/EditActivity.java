@@ -138,15 +138,15 @@ public class EditActivity extends Activity {
  		   					postParameters.add(new BasicNameValuePair("choice"+i, inputs.get(i)));
  		   				}
  		   			}
- 		   			String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/edit.php", postParameters);
- 		   			if ("success\n".equals(result)) {
- 		   				Intent intent = new Intent(EditActivity.this, IndexActivity.class);
- 		   				startActivity(intent);
- 		   				Toast.makeText(getApplicationContext(), "You vote has been editted", Toast.LENGTH_SHORT).show();
- 		   				finish();
- 		   			} else {
- 		   				showAlertDialog("You vote is not saved");
- 		   			}
+ 		   			CustomHttpClient.executeHttpGet(CommonUtils.votes_baseUrl, CommonUtils.apiKey);
+// 		   			if ("success\n".equals(result)) {
+// 		   				Intent intent = new Intent(EditActivity.this, IndexActivity.class);
+// 		   				startActivity(intent);
+// 		   				Toast.makeText(getApplicationContext(), "You vote has been editted", Toast.LENGTH_SHORT).show();
+// 		   				finish();
+// 		   			} else {
+// 		   				showAlertDialog("You vote is not saved");
+// 		   			}
  				}
  			});
 		} catch (Exception e) {

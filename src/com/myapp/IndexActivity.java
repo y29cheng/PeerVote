@@ -96,7 +96,7 @@ public class IndexActivity extends Activity implements Runnable {
 	public void run() {
 		if (voteList == null) {
 			voteList = new ArrayList<HashMap<String, String>>();
-			json = CustomHttpClient.executeHttpGet(BaseActivity.votes_baseUrl, BaseActivity.apiKey);
+			json = CustomHttpClient.executeHttpGet(CommonUtils.votes_baseUrl, CommonUtils.apiKey);
 			try {
 				JSONArray votes = json;
 				for (int i = 0; i < votes.length(); i++) {
@@ -166,7 +166,7 @@ public class IndexActivity extends Activity implements Runnable {
 //								        	   }
 //								        	   postParameters.add(new BasicNameValuePair("id", vote.getJSONObject("_id").getString("$oid")));
 //								        	   String result = CustomHttpClient.executeHttpPut(vote, "[]");
-							        		   if (CustomHttpClient.executeHttpPut(BaseActivity.votes_baseUrl, BaseActivity.apiKey, vote, "[]")) {
+							        		   if (CustomHttpClient.executeHttpPut(CommonUtils.votes_baseUrl, CommonUtils.apiKey, vote, "[]")) {
 							        			   voteList = null;
 								        		   pd = ProgressDialog.show(IndexActivity.this, "", "Loading, please wait...", false);
 								        		   Thread th = new Thread(IndexActivity.this);

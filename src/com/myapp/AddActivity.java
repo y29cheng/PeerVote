@@ -115,16 +115,16 @@ public class AddActivity extends Activity {
 						postParameters.add(new BasicNameValuePair("choice"+i, inputs.get(i)));
 					}
 				}
-				String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/add.php", postParameters);
-				if ("success\n".equals(result)) {
-					IndexActivity.voteList = null;
-					Intent intent = new Intent(AddActivity.this, IndexActivity.class);
-					startActivity(intent);
-	        		Toast.makeText(getApplicationContext(), "Your vote has been recorded.", Toast.LENGTH_SHORT).show();
-	        		finish();
-				} else {
-					showAlertDialog("Your vote is not saved.");
-				}
+				CustomHttpClient.executeHttpGet(CommonUtils.votes_baseUrl, CommonUtils.apiKey);
+//				if ("success\n".equals(result)) {
+//					IndexActivity.voteList = null;
+//					Intent intent = new Intent(AddActivity.this, IndexActivity.class);
+//					startActivity(intent);
+//	        		Toast.makeText(getApplicationContext(), "Your vote has been recorded.", Toast.LENGTH_SHORT).show();
+//	        		finish();
+//				} else {
+//					showAlertDialog("Your vote is not saved.");
+//				}
 			}
 		});
 	}

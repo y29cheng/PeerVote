@@ -81,17 +81,17 @@ public class ViewActivity extends Activity {
 					    			   postParameters.add(new BasicNameValuePair("expire", "24"));
 					    			   postParameters.add(new BasicNameValuePair("time", "1000000"));
 					    		   }
-					    		   String result = CustomHttpClient.executeHttpPost("http://teamwiki.phpfogapp.com/vote.php", postParameters);
-					    		   if ("success\n".equals(result)) {
-					    			   Intent intent = new Intent(ViewActivity.this, IndexActivity.class);
-					    			   startActivity(intent);
-					    			   Toast.makeText(getApplicationContext(), "You vote has been submitted.", Toast.LENGTH_SHORT).show();
-					    			   finish();
-					    		   } else if ("expired\n".equals(result)) {
-					    			   showAlertDialog("Expired, vote not counted.");
-					    		   } else {
-					    			   showAlertDialog("Vote failed, try again later. " + result);
-					    		   }
+					    		   CustomHttpClient.executeHttpGet(CommonUtils.votes_baseUrl, CommonUtils.apiKey);
+//					    		   if ("success\n".equals(result)) {
+//					    			   Intent intent = new Intent(ViewActivity.this, IndexActivity.class);
+//					    			   startActivity(intent);
+//					    			   Toast.makeText(getApplicationContext(), "You vote has been submitted.", Toast.LENGTH_SHORT).show();
+//					    			   finish();
+//					    		   } else if ("expired\n".equals(result)) {
+//					    			   showAlertDialog("Expired, vote not counted.");
+//					    		   } else {
+//					    			   showAlertDialog("Vote failed, try again later. " + result);
+//					    		   }
 					           }
 					       })
 					       .setNegativeButton("No", new DialogInterface.OnClickListener() {

@@ -1,9 +1,15 @@
 package com.myapp;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+
+import com.mongodb.MongoException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,8 +43,10 @@ public class RegisterActivity extends Activity {
     		String message = "";
     		if (username.equals("")) {
     			message = "Please input your username.";
+    			CommonUtils.showAlertDialog(message, this);
     		} else if (!passwd1.equals(passwd2) || passwd1.equals("")) {
     			message = "Passwords don't match.";
+    			CommonUtils.showAlertDialog(message, this);
     		} else {
 //    			ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 //    			postParameters.add(new BasicNameValuePair("username", username));
@@ -50,16 +58,39 @@ public class RegisterActivity extends Activity {
 //					startActivity(intent);
 //					finish();
 //					return;
-    			
-				} else if (result.equals("1\n")) {
-					message = "Account exists.";
-				} else if (result.equals("2\n")) {
-					message = "Register error";
-				} else {
-					message = "Application has encountered a problem.";
-				}
+    			byte[] salt = CommonUtils.generateSalt(5);
+    			StringBuilder sb = new StringBuilder();
+    			for (int i = 0; i < salt.length; i++) {
+    				sb.append(Integer.toString(salt[i] & 0xff + 0x100, 16).substring(1));
+    			}
+    			String saltString = sb.toString();
+    			try {
+    				byte[] fingerPrintInBytes = CommonUtils.generateFingerPrint(passwd1, saltString);
+	    			sb.delete(0,  sb.length() - 1);
+	    			for (int i = 0; i < fingerPrintInBytes.length; i++) {
+	    				sb.append(Integer.toString(fingerPrintInBytes[i] & 0xff + 0x100, 16).substring(1));
+	    			}
+	    			String fingerprint = sb.toString();
+    				CommonUtils.insertUserCredentials(username, fingerprint, saltString);
+    				Intent intent = new Intent(this, LoginActivity.class);
+					startActivity(intent);
+					finish();
+					return;
+    			} catch (NoSuchAlgorithmException e) {
+    				message = "Error encountered when hashing user credentials.";
+    				CommonUtils.showAlertDialog(message, this);
+    			}  catch (UnknownHostException e) {
+    				message = e.getMessage();
+    				CommonUtils.showAlertDialog(message, this);
+    			} catch (IOException e) {
+    				message = "Error encountered when hashing user credentials.";
+    				CommonUtils.showAlertDialog(message, this);
+    			} catch (Exception e) {
+    				message = "Error encountered when inserting user credentials.";
+    				CommonUtils.showAlertDialog(message, this);
+    			}
     		}
-    		showAlertDialog(message);
+    		
     	}
     	if (v.getId() == R.id.textView6) {
     		Intent intent = new Intent(this, LoginActivity.class);

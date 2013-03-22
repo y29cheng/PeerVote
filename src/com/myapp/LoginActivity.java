@@ -1,5 +1,6 @@
 package com.myapp;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import org.apache.http.NameValuePair;
@@ -54,10 +55,10 @@ public class LoginActivity extends Activity {
 			String message = null;
 			if (username.equals("")) {
 				message = "Please enter username.";
-				BaseActivity.showAlertDialog(message, this);
+				CommonUtils.showAlertDialog(message, this);
 			} else if (password.equals("")) {
 				message = "Please enter password.";
-				BaseActivity.showAlertDialog(message, this);
+				CommonUtils.showAlertDialog(message, this);
 			} else  {
 //				ArrayList<NameValuePair> postParameters = new ArrayList<NameValuePair>();
 //				postParameters.add(new BasicNameValuePair("username", username));
@@ -72,32 +73,34 @@ public class LoginActivity extends Activity {
 //					message = "Log in failed.";
 //					showAlertDialog(message);
 //				}
-				if (!BaseActivity.openDBConnection()) {
-					message = "Can not establish connection to remote host.";
-					BaseActivity.showAlertDialog(message, this);
-				}
-				DBCollection coll = BaseActivity.db.getCollection("logins");
-				BasicDBObject query = new BasicDBObject("username", username);
-				DBObject obj = coll.findOne(query);
-				String fingerprint = obj.get("fingerprint").toString();
-				String salt = obj.get("salt").toString();
 				try {
-					if (BaseActivity.validatePassword(password, salt, fingerprint)) {
-						LoginActivity.username = username;
-						Intent intent = new Intent(this, IndexActivity.class);
-						startActivity(intent);
-						finish();
-					} else {
-						message = "Invalid username or password.";
-						BaseActivity.showAlertDialog(message, this);
+					CommonUtils.openDBConnection();
+					DBCollection coll = CommonUtils.db.getCollection("logins");
+					BasicDBObject query = new BasicDBObject("username", username);
+					DBObject obj = coll.findOne(query);
+					String fingerprint = obj.get("fingerprint").toString();
+					String salt = obj.get("salt").toString();
+					try {
+						if (CommonUtils.validatePassword(password, salt, fingerprint)) {
+							LoginActivity.username = username;
+							Intent intent = new Intent(this, IndexActivity.class);
+							startActivity(intent);
+							finish();
+						} else {
+							message = "Invalid username or password.";
+							CommonUtils.showAlertDialog(message, this);
+						}
+					} catch (Exception e) {
+						message = "Encountered an internal problem.";
+						CommonUtils.showAlertDialog(message, this);
 					}
-				} catch (Exception e) {
-					message = "Encountered an internal problem.";
-					BaseActivity.showAlertDialog(message, this);
+					
+					CommonUtils.closeDBConnection();
+					
+				} catch (UnknownHostException e) {
+					message = "Can not establish connection to remote host.";
+					CommonUtils.showAlertDialog(message, this);
 				}
-				// insert code here
-				
-				BaseActivity.closeDBConnection();
 				
 			}
 		}		

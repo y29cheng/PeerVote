@@ -13,11 +13,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
+import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoException;
+import com.mongodb.WriteConcern;
+import com.mongodb.WriteResult;
 
 
-public class BaseActivity {
+public class CommonUtils {
 	private final static String username = "georgeC";
 	private final static char[] password = "hungry plant 147".toCharArray();
 	static final String votes_baseUrl = "https://api.mongolab.com/api/1/databases/teamwiki/collections/votes?";
@@ -27,32 +32,43 @@ public class BaseActivity {
 	static DB db = null;
 	static String SHA = "SHA-256";
 	
-	public static boolean openDBConnection() {
+	private CommonUtils() {}
+	
+	static void openDBConnection() throws UnknownHostException {
 		if (mongoClient == null) {
-			try {
-				mongoClient = new MongoClient("dbh54.mongolab.com", 27547);
-				db = mongoClient.getDB("teamwiki");
-				db.authenticate(username, password);
-				return true;
-			} catch (UnknownHostException e) {
-				return false;
-			}
+			mongoClient = new MongoClient("dbh54.mongolab.com", 27547);
 		}
-		return true;
+		if (db == null) {
+			db = mongoClient.getDB("teamwiki");
+			db.authenticate(username, password);
+		}
 	}
 	
-	public static void closeDBConnection() {
+	static void closeDBConnection() {
 		if (mongoClient != null) mongoClient.close();
 	}
 	
-	public static byte[] generateSalt(int length) {
+	static byte[] generateSalt(int length) {
 		byte[] salt = new byte[length];
 		SecureRandom random = new SecureRandom();
 		random.nextBytes(salt);
 		return salt;
 	}
 	
-	public static boolean validatePassword(String passwd, String salt, String fingerprint) throws NoSuchAlgorithmException, IOException {
+	static byte[] generateFingerPrint(String passwd, String salt) throws NoSuchAlgorithmException, IOException {
+		MessageDigest md = MessageDigest.getInstance(SHA);
+		byte[] passwdInBytes = passwd.getBytes();
+		byte[] saltInBytes = salt.getBytes();
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		baos.write(passwdInBytes);
+		baos.write(saltInBytes);
+		byte[] passwdSaltInBytes = baos.toByteArray();
+		md.update(passwdSaltInBytes);
+		byte[] fingerPrintInBytes = md.digest();
+		return fingerPrintInBytes;
+	}
+	
+	static boolean validatePassword(String passwd, String salt, String fingerprint) throws NoSuchAlgorithmException, IOException {
 		MessageDigest md = MessageDigest.getInstance(SHA);
 		byte[] passwdInBytes = passwd.getBytes();
 		byte[] saltInBytes = passwd.getBytes();
@@ -69,7 +85,15 @@ public class BaseActivity {
 		return fingerprint.equals(sb.toString());
 	}
 	
-	public static void showAlertDialog(String message, Activity act) {
+	static void insertUserCredentials(String username, String fingerprint, String salt) throws UnknownHostException, Exception {
+		openDBConnection();
+		DBCollection coll = db.getCollection("logins");
+		BasicDBObject credential = new BasicDBObject("username", username).append("fingerprint", fingerprint).append("salt", salt);
+		WriteResult result = coll.insert(credential, WriteConcern.ACKNOWLEDGED);
+		if (!result.getCachedLastError().ok()) throw new Exception("Insert failed.");
+	}
+	
+	static void showAlertDialog(String message, Activity act) {
     	AlertDialog.Builder builder = new AlertDialog.Builder(act);
 		builder.setMessage(message)
 		       .setCancelable(false)
